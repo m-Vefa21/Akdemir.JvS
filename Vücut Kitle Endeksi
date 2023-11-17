@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kilo Boy Endeksi Hesaplama</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #bmiCalculator {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            transition: box-shadow 0.3s ease;
+        }
+
+        #bmiCalculator:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="bmiCalculator">
+        <label for="weight">Kilonuz (kg):</label>
+        <input type="number" id="weight" placeholder="Kilonuzu girin..." required>
+
+        <label for="height">Boyunuz (cm):</label>
+        <input type="number" id="height" placeholder="Boyunuzu girin..." required>
+
+        <button onclick="calculateBMI()">Hesapla</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            var weight = document.getElementById('weight').value;
+            var height = document.getElementById('height').value;
+
+            if (weight > 0 && height > 0) {
+                var bmi = weight / ((height / 100) ** 2);
+                displayResult(bmi);
+            } else {
+                alert('Lütfen geçerli bir kilo ve boy girin.');
+            }
+        }
+
+        function displayResult(bmi) {
+            var resultElement = document.getElementById('result');
+            var resultText;
+
+            if (bmi < 18.5) {
+                resultText = 'Zayıf';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                resultText = 'Normal';
+            } else if (bmi >= 25 && bmi < 30) {
+                resultText = 'Biraz Kilolu';
+            } else {
+                resultText = 'Fazla Kilolu';
+            }
+
+            resultElement.innerHTML = 'Vücut Kitle İndeksi (BMI): ' + bmi.toFixed(2) + '<br>Sonuç: ' + resultText;
+        }
+    </script>
+</body>
+</html>
+
