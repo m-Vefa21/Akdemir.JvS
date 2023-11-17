@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+        }
+    </style>
+    <title>JavaScript Animasyon Örneği</title>
+</head>
+<body>
+
+<script>
+    // Kutucuk sayısı
+    const boxCount = 12;
+
+    // Kutucukların başlangıç pozisyonları, hızları ve renkleri
+    const boxes = [];
+    for (let i = 0; i < boxCount; i++) {
+        boxes.push({
+            positionX: 0,
+            positionY: i * 60,
+            speed: 5 + Math.random() * 5,
+            color: getRandomColor()
+        });
+    }
+
+    // Kutucukları oluştur ve stilini ayarla
+    boxes.forEach((box, index) => {
+        const boxElement = document.createElement('div');
+        boxElement.className = 'box';
+        boxElement.style.top = box.positionY + 'px';
+        boxElement.style.backgroundColor = box.color;
+        document.body.appendChild(boxElement);
+
+        // Animasyon fonksiyonu
+        function animate() {
+            // Kutucuğun pozisyonunu güncelle
+            box.positionX += box.speed;
+
+            // Eğer kutucuk ekranın sağ kenarına ulaştıysa yönü değiştir
+            if (box.positionX + boxElement.clientWidth > window.innerWidth || box.positionX < 0) {
+                box.speed = -box.speed;
+            }
+
+            // Kutucuğun pozisyonunu güncelle
+            boxElement.style.left = box.positionX + 'px';
+
+            // Animasyonu devam ettir
+            requestAnimationFrame(animate);
+        }
+
+        // Animasyonu başlat
+        animate();
+    });
+
+    // Rastgele renk oluşturma fonksiyonu
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+
+</body>
+</html>
