@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu Uygulaması</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hava Durumu</h1>
+
+    <label for="cityInput">Şehir:</label>
+    <input type="text" id="cityInput" placeholder="Şehir adını girin">
+    <button onclick="getWeather()">Hava Durumu Getir</button>
+
+    <div id="weatherInfo"></div>
+
+    <script>
+        function getWeather() {
+            var apiKey = 'YOUR_API_KEY'; // OpenWeatherMap API key
+            var city = document.getElementById('cityInput').value;
+
+            if (!city) {
+                alert('Lütfen bir şehir adı girin.');
+                return;
+            }
+
+            var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeather(data);
+                })
+                .catch(error => {
+                    console.error('Hava durumu bilgisi alınamadı:', error);
+                    alert('Hava durumu bilgisi alınamadı. Lütfen şehir adını kontrol edin.');
+                });
+        }
+
+        function displayWeather(data) {
+            var weatherInfo = document.getElementById('weatherInfo');
+            weatherInfo.innerHTML = '';
+
+            if (data.cod !== '404') {
+                var cityName = data.name;
+                var temperature = Math.round(data.main.temp - 273.15); // Kelvin to Celsius
+                var description = data.weather[0].description;
+
+                var weatherHtml = `<h2>${cityName}</h2>
+                                  <p>Sıcaklık: ${temperature}°C</p>
+                                  <p>Durum: ${description}</p>`;
+
+                weatherInfo.innerHTML = weatherHtml;
+            } else {
+                alert('Hava durumu bilgisi alınamadı. Lütfen şehir adını kontrol edin.');
+            }
+        }
+    </script>
+</body>
+</html>
+
