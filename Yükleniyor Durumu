@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .loader-container {
+            text-align: center;
+        }
+
+        .loader {
+            border: 8px solid #3498db;
+            border-radius: 50%;
+            border-top: 8px solid #f1c40f;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .text {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #333;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <title>Yükleme Çubuğu</title>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="loader" id="loader"></div>
+        <div class="text" id="text">Yükleniyor...</div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var loader = document.getElementById("loader");
+            var text = document.getElementById("text");
+
+            var progress = 0;
+            var interval = setInterval(function () {
+                if (progress < 100) {
+                    progress += 1;
+                    loader.style.backgroundImage = `conic-gradient(#3498db ${progress}%, transparent ${progress}%)`;
+                    text.textContent = `Yükleniyor... ${progress}%`;
+                } else {
+                    clearInterval(interval);
+                    text.textContent = "Yükleme Tamamlandı!";
+                }
+            }, 50);
+        });
+    </script>
+</body>
+</html>
