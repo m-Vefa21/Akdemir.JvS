@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('Resmin Bağlantısını Yapıştırarak Özelleştirebilirsiniz') center/cover no-repeat; 
+            color: #FFFFFF; /* Yazı rengi beyaz */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .clock {
+            font-size: 3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .digit {
+            padding: 0.2em 0.5em;
+            background-color: #00FF00; /* Açık yeşil kutucuk rengi */
+            border-radius: 5px;
+            margin: 0 0.2em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .colon {
+            font-size: 1.2em;
+            margin: 0 0.2em;
+        }
+    </style>
+    <title>Dijital Saat</title>
+</head>
+<body>
+    <div class="clock">
+        <div class="digit" id="hour">00</div>
+        <span class="colon">:</span>
+        <div class="digit" id="minute">00</div>
+        <span class="colon">:</span>
+        <div class="digit" id="second">00</div>
+    </div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            document.getElementById('hour').innerText = hours;
+            document.getElementById('minute').innerText = minutes;
+            document.getElementById('second').innerText = seconds;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // İlk başlangıçta saat değerlerini güncelle
+    </script>
+</body>
+</html>
+
