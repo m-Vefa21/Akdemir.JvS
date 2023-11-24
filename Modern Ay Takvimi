@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #calendar {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #prev,
+        #next {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+        }
+
+        .day {
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+    <title>Mini Takvim</title>
+</head>
+<body>
+
+    <div id="calendar">
+        <div id="header">
+            <button id="prev" onclick="prevMonth()">&#10094;</button>
+            <span id="month" style="flex: 1;"></span>
+            <button id="next" onclick="nextMonth()">&#10095;</button>
+        </div>
+        <div id="days"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+        
+            showCalendar(currentMonth, currentYear);
+        });
+        
+        function showCalendar(month, year) {
+            document.getElementById("month").innerHTML = getMonthName(month) + " " + year;
+        
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+            let daysContainer = document.getElementById("days");
+            daysContainer.innerHTML = "";
+        
+            for (let i = 0; i < firstDay; i++) {
+                let emptyDay = document.createElement("div");
+                emptyDay.className = "day";
+                daysContainer.appendChild(emptyDay);
+            }
+        
+            for (let i = 1; i <= daysInMonth; i++) {
+                let dayElement = document.createElement("div");
+                dayElement.className = "day";
+                dayElement.innerHTML = i;
+                dayElement.addEventListener("click", function () {
+                    alert("Tıklanan gün: " + i);
+                });
+                daysContainer.appendChild(dayElement);
+            }
+        }
+        
+        function prevMonth() {
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+        
+            if (currentMonth === 0) {
+                currentYear--;
+                currentMonth = 11;
+            } else {
+                currentMonth--;
+            }
+        
+            showCalendar(currentMonth, currentYear);
+        }
+        
+        function nextMonth() {
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+        
+            if (currentMonth === 11) {
+                currentYear++;
+                currentMonth = 0;
+            } else {
+                currentMonth++;
+            }
+        
+            showCalendar(currentMonth, currentYear);
+        }
+        
+        function getMonthName(month) {
+            const monthNames = [
+                "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+                "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+            ];
+        
+            return monthNames[month];
+        }
+    </script>
+</body>
+</html>
