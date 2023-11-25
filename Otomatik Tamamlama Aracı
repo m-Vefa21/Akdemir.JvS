@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Otomatik Tamamlama</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .autocomplete {
+      position: relative;
+      display: inline-block;
+    }
+
+    #autocomplete-input {
+      padding: 15px;
+      width: 300px;
+      border: 2px solid #00cc00; 
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #autocomplete-list {
+      position: absolute;
+      z-index: 1;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border: 1px solid #ccc;
+      border-top: none;
+      width: 300px;
+    }
+
+    #autocomplete-list li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #autocomplete-list li:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <div class="autocomplete">
+    <input type="text" id="autocomplete-input" placeholder="Ülkeler">
+    <ul id="autocomplete-list"></ul>
+  </div>
+
+  <script>
+    const countries = ["Türkiye", "ABD", "Almanya", "Fransa", "İngiltere", "İtalya", "Japonya", "Çin"];
+
+    const input = document.getElementById("autocomplete-input");
+    const autocompleteList = document.getElementById("autocomplete-list");
+
+    input.addEventListener("input", function() {
+      const inputValue = input.value.toLowerCase();
+      closeAutocompleteList();
+
+      if (!inputValue) return;
+
+      const matchingCountries = countries.filter(country => country.toLowerCase().includes(inputValue));
+
+      if (matchingCountries.length === 0) return;
+
+      matchingCountries.forEach(country => {
+        const listItem = document.createElement("li");
+        listItem.textContent = country;
+        listItem.addEventListener("click", function() {
+          input.value = country;
+          closeAutocompleteList();
+        });
+        autocompleteList.appendChild(listItem);
+      });
+
+      autocompleteList.style.display = "block";
+    });
+
+    function closeAutocompleteList() {
+      autocompleteList.innerHTML = "";
+      autocompleteList.style.display = "none";
+    }
+
+    document.addEventListener("click", function(e) {
+      if (e.target !== input && e.target !== autocompleteList) {
+        closeAutocompleteList();
+      }
+    });
+  </script>
+</body>
+</html>
