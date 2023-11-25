@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çizim Uygulaması</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    #drawingContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #toolsContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    canvas {
+      border: 2px solid #000;
+      margin-top: 10px;
+    }
+
+    input, button, select, label {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="drawingContainer">
+    <div id="toolsContainer">
+      <input type="color" id="colorPicker" value="#000000">
+      <label for="brushSize">Fırça Kalınlığı:</label>
+      <input type="range" id="brushSize" min="1" max="20" value="5">
+      <button onclick="clearCanvas()">Temizle</button>
+      <label for="drawingMode">Çizim Modu:</label>
+      <select id="drawingMode">
+        <option value="draw">Çiz</option>
+        <option value="erase">Sil</option>
+      </select>
+    </div>
+
+    <canvas id="drawingCanvas" width="800" height="600"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSize = document.getElementById('brushSize');
+    const drawingMode = document.getElementById('drawingMode');
+    let isDrawing = false;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    function startDrawing(e) {
+      isDrawing = true;
+      draw(e);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+
+      ctx.lineWidth = brushSize.value;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = colorPicker.value;
+
+      const x = e.clientX - canvas.offsetLeft;
+      const y = e.clientY - canvas.offsetTop;
+
+      if (drawingMode.value === 'draw') {
+        ctx.globalCompositeOperation = 'source-over';
+      } else if (drawingMode.value === 'erase') {
+        ctx.globalCompositeOperation = 'destination-out';
+      }
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.beginPath();
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</body>
+</html>
