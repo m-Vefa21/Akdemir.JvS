@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .quiz-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #question-container {
+            margin-bottom: 20px;
+        }
+
+        #score-container {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button.option-button {
+            margin: 8px;
+            padding: 8px;
+            width: 150px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.option-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+    <title>Quiz Uygulaması</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Aleword Quiz</h1>
+        <div id="question-container"></div>
+        <button onclick="nextQuestion()">Sonraki Soru</button>
+        <div id="score-container">Puan: <span id="score">0</span></div>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "Mona Lisa Tablosu Kime Aittir?",
+                options: ["Leonardo Da Vinci", "Vincent van Gogh", "Johannes Vermeer", "Gustav Klimt"],
+                correctAnswer: "Leonardo Da Vinci"
+            },
+            {
+                question: "Aşağıdakilerden hangisi ana donanım birimi değildir?",
+                options: ["Ana kart", "Ram", "Ekran kartı", "CD Rom"],
+                correctAnswer: "CD Rom"
+            },
+            {
+                question: "The Godfather Filminin Yönetmeni Kimdir?",
+                options: ["Robert Altman", "John ford", "Francis Ford Coppola", "Stanley Kubrick"],
+                correctAnswer: "Francis Ford Coppola"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById('question-container');
+            questionContainer.innerHTML = '';
+
+            const currentQuestion = questions[currentQuestionIndex];
+
+            const questionElement = document.createElement('p');
+            questionElement.textContent = currentQuestion.question;
+            questionContainer.appendChild(questionElement);
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.classList.add('options-container');
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement('button');
+                optionButton.textContent = option;
+                optionButton.classList.add('option-button');
+                optionButton.addEventListener('click', () => checkAnswer(option));
+                optionsContainer.appendChild(optionButton);
+            });
+
+            questionContainer.appendChild(optionsContainer);
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (selectedAnswer === currentQuestion.correctAnswer) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const quizContainer = document.querySelector('.quiz-container');
+            quizContainer.innerHTML = '';
+
+            const resultMessage = document.createElement('h2');
+            resultMessage.textContent = `Quiz tamamlandı! Toplam puan: ${score}`;
+            quizContainer.appendChild(resultMessage);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        startQuiz();
+    </script>
+</body>
+</html>
+
