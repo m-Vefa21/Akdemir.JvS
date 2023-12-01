@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        #filter-options {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        label, select {
+            margin-right: 10px;
+        }
+
+        #book-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        #book-table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+    </style>
+    <title>Kitap Listesi</title>
+</head>
+<body>
+    <h1>Kitap Listesi</h1>
+
+    <div id="filter-options">
+        <label for="genre-filter">Tür:</label>
+        <select id="genre-filter">
+            <option value="all">Hepsi</option>
+            <option value="fiction">Roman</option>
+            <option value="non-fiction">Sachbuch</option>
+            <option value="mystery">Gizem</option>
+        </select>
+
+        <label for="sort-options">Sırala:</label>
+        <select id="sort-options">
+            <option value="title">Başlık</option>
+            <option value="author">Yazar</option>
+            <option value="published-year">Yayın Yılı</option>
+        </select>
+    </div>
+
+    <table id="book-table">
+
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const books = [
+                { title: "Kitap 1", author: "Yazar 1", genre: "fiction", publishedYear: 2020 },
+                { title: "Kitap 2", author: "Yazar 2", genre: "non-fiction", publishedYear: 2018 },
+                { title: "Kitap 3", author: "Yazar 3", genre: "mystery", publishedYear: 2021 },
+
+            ];
+
+            const bookTable = document.getElementById("book-table");
+            const genreFilter = document.getElementById("genre-filter");
+            const sortOptions = document.getElementById("sort-options");
+
+            function displayBooks(books) {
+                bookTable.innerHTML = "";
+
+                books.forEach(book => {
+                    const row = bookTable.insertRow();
+                    row.innerHTML = `<td>${book.title}</td><td>${book.author}</td><td>${book.genre}</td><td>${book.publishedYear}</td>`;
+                });
+            }
+
+            function filterBooks() {
+                const selectedGenre = genreFilter.value;
+                const filteredBooks = selectedGenre === "all" ? books : books.filter(book => book.genre === selectedGenre);
+                const sortBy = sortOptions.value;
+                filteredBooks.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));
+                displayBooks(filteredBooks);
+            }
+
+            displayBooks(books);
+
+            genreFilter.addEventListener("change", filterBooks);
+            sortOptions.addEventListener("change", filterBooks);
+        });
+    </script>
+</body>
+</html>
