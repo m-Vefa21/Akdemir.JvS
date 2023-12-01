@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        #product-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .product {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #cart {
+            margin-top: 20px;
+            border-top: 2px solid #007bff;
+            padding-top: 10px;
+        }
+
+        #cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .cart-item button {
+            background-color: #dc3545;
+        }
+
+        .cart-item button:hover {
+            background-color: #bd2130;
+        }
+    </style>
+    <title>Alışveriş Sepeti</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Alışveriş Sepeti</h1>
+
+        <ul id="product-list">
+            <li class="product">
+                <span>Ürün 1 - $10</span>
+                <button onclick="addToCart('Ürün 1', 10)">Sepete Ekle</button>
+            </li>
+            <li class="product">
+                <span>Ürün 2 - $15</span>
+                <button onclick="addToCart('Ürün 2', 15)">Sepete Ekle</button>
+            </li>
+
+        </ul>
+
+        <div id="cart">
+            <h2>Sepet</h2>
+            <ul id="cart-items"></ul>
+            <p id="total">Toplam: $0</p>
+        </div>
+    </div>
+
+    <script>
+        let cartItems = [];
+
+        function addToCart(product, price) {
+            cartItems.push({ product, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById("cart-items");
+            const totalElement = document.getElementById("total");
+            let total = 0;
+
+            cartList.innerHTML = "";
+
+            cartItems.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("cart-item");
+                listItem.innerHTML = `
+                    <span>${item.product} - $${item.price}</span>
+                    <button onclick="removeFromCart('${item.product}', ${item.price})">Kaldır</button>
+                `;
+                cartList.appendChild(listItem);
+                total += item.price;
+            });
+
+            totalElement.innerText = `Toplam: $${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(product, price) {
+            cartItems = cartItems.filter(item => item.product !== product || item.price !== price);
+            updateCart();
+        }
+    </script>
+</body>
+</html>
+
